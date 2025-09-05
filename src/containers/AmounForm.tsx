@@ -1,14 +1,16 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import FormTitle from "../componnets/FormTitle"
 import Panel from "../componnets/Panel"
 import CurrencyPicker from "../componnets/CurrencyPicker"
-import useExchangeState from "../states/exchangeState"
+import useCurrenciesState from "../states/currenciesState"
 import SwapSVG from "../svg/SwapSVG"
+import { useDebounce } from "../hooks/useDebounce"
 
 const AmounForm = () => {
 
     const [inputValue, setInputValue]= useState('')
-    const { fromCurrency, toCurrency, setValue, setFromCurrency, setToCurrency, swapCurrencies } = useExchangeState()
+    const { fromCurrency, toCurrency, setValue, setFromCurrency, setToCurrency, swapCurrencies } = useCurrenciesState()
+    const debouncedInput = useDebounce(inputValue, 250)
 
     const handleValueChanged = (event: ChangeEvent<HTMLInputElement>) => {
         let val = event.target.value
@@ -16,11 +18,17 @@ const AmounForm = () => {
         //normalize number value
         val = val.replace(/[^\d,\\.]+/g, '')
         setInputValue(val)
-        
-        const parsedValue = Number.parseFloat(val.replace(',','.'))
-        if (!Number.isNaN(parsedValue))
-            setValue(parsedValue)
     }
+
+    useEffect(() => {
+        if (!debouncedInput) {
+            setValue(0)
+        } else {
+            const parsedValue = Number.parseFloat(debouncedInput.replace(',','.'))
+            if (!Number.isNaN(parsedValue))
+                setValue(parsedValue)
+        }
+    }, [debouncedInput, setValue])
 
     return (    
         <Panel classname="flex-1 h-fit">

@@ -1,23 +1,34 @@
 import FormTitle from "../componnets/FormTitle"
 import Panel from "../componnets/Panel"
-import useExchangeState from "../states/exchangeState"
+import useCurrenciesState from "../states/currenciesState"
 import Divider from "../componnets/Divider"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { getExchangeRate, getInverseRate } from "../helpers/exchangeHelper"
+import useExchangeState from "../states/exchangeState"
 
 const ResultPanel = () => {
 
-    const { exchandeData, result, fromCurrency, toCurrency } = useExchangeState()
+    const { fromCurrency, toCurrency, value } = useCurrenciesState()
+    const { exchangeData } = useExchangeState()
+
+    const [result, setResult] = useState(0)
 
     const exchangeRate = useMemo(() => {
-        if (!exchandeData) return 0
-        return Math.round(getExchangeRate(exchandeData, fromCurrency, toCurrency) * 100) / 100
-    }, [exchandeData, fromCurrency, toCurrency])
+        if (!exchangeData) return 0
+        return Math.round(getExchangeRate(exchangeData, fromCurrency, toCurrency) * 100) / 100
+    }, [exchangeData, fromCurrency, toCurrency])
 
     const inverseRate = useMemo(() => {
-        if (!exchandeData) return 0
-        return Math.round(getInverseRate(exchandeData, fromCurrency, toCurrency) * 100) / 100
-    }, [exchandeData, fromCurrency, toCurrency])
+        if (!exchangeData) return 0
+        return Math.round(getInverseRate(exchangeData, fromCurrency, toCurrency) * 100) / 100
+    }, [exchangeData, fromCurrency, toCurrency])
+
+    useEffect(() => {
+        if (exchangeData) {
+            const res = getExchangeRate(exchangeData, fromCurrency, toCurrency) * value
+            setResult(Math.round(res * 100) / 100)
+        }
+    }, [fromCurrency, toCurrency, value, exchangeData])
 
     return (    
         <Panel classname="w-full lg:w-[336px]">

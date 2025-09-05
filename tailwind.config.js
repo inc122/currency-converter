@@ -18,12 +18,17 @@ module.exports = {
       "neutral-100": "#F5F5F5",
       "neutral-200": "#E5E5E5",
       "neutral-300": "#D4D4D4",
-      "neutral-500": '#737373'
+      "neutral-500": '#737373',
+      "red-50": '#FEF2F2',
+      "red-200": '#FFC9C9',
+      "red-700": '#C10007',
+      "white-tranparent": '#ffffffc0'
     },
     borderRadius: {
       "xs": '8px',
       "sm": '12px',
-      "lg": "16px"
+      "lg": "16px",
+      "full": "999999px"
     },
     screens: {
       "sm": '480px',

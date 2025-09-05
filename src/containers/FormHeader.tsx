@@ -2,14 +2,17 @@ import moment from "moment"
 import Label from "../componnets/Label"
 import Tag from "../componnets/Tag"
 import Title from "../componnets/Title"
-import useExchangeState from "../states/exchangeState"
 import ClockSVG from "../svg/ClockSVG"
 import RefreshSVG from "../svg/RefreshSVG"
 import WifiSVG from "../svg/WifiSVG"
+import useOnlineState from "../states/onlineState"
+import NoWifiSVG from "../svg/NoWifiSVG"
+import useExchangeState from "../states/exchangeState"
 
 const FormHeader = () => {
 
-    const { exchandeData } = useExchangeState()
+    const { exchangeData, loadExchangeData } = useExchangeState()
+    const { isOnline } = useOnlineState()
 
     return (
         <div>
@@ -19,16 +22,16 @@ const FormHeader = () => {
             </div>
             <div className="w-full flex flex-col lg:flex-row gap-[8px] mt-[30px] items-center justify-center">
                 <Tag 
-                    variant="ok" 
-                    icon={<WifiSVG />}>
-                        Online
+                    variant={isOnline ? 'ok' : 'error'} 
+                    icon={isOnline ? <WifiSVG /> : <NoWifiSVG />}>
+                        {isOnline ? 'Online' : 'Offline'}
                 </Tag>
                 <Tag
                     variant="transparent"
                     icon={<ClockSVG />}>
-                        {`Last updated: ${moment(exchandeData?.date).format('DD/MM/YYYY hh:mm a')}`}
+                        {`Last updated: ${moment(exchangeData?.date).format('DD/MM/YYYY hh:mm a')}`}
                 </Tag>
-                <button>
+                <button onClick={loadExchangeData}>
                     <Tag 
                         variant="info"
                         icon={<RefreshSVG />}>
