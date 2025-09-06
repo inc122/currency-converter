@@ -5,6 +5,8 @@ import CurrencyPicker from "../componnets/CurrencyPicker"
 import useCurrenciesState from "../states/currenciesState"
 import SwapSVG from "../svg/SwapSVG"
 import { useDebounce } from "../hooks/useDebounce"
+import { getFromLocalStorage, saveToLocalStorage } from "../helpers/storageHelper"
+import { AMOUNT_STORAGE_KEY } from "../constants"
 
 const AmounForm = () => {
 
@@ -18,6 +20,7 @@ const AmounForm = () => {
         //normalize number value
         val = val.replace(/[^\d,\\.]+/g, '')
         setInputValue(val)
+        saveToLocalStorage(AMOUNT_STORAGE_KEY, val)
     }
 
     useEffect(() => {
@@ -29,6 +32,11 @@ const AmounForm = () => {
                 setValue(parsedValue)
         }
     }, [debouncedInput, setValue])
+
+    useEffect(() => {
+        const storedAmount = getFromLocalStorage<number>(AMOUNT_STORAGE_KEY)
+        if (storedAmount) setInputValue(storedAmount.toString())
+    }, [])
 
     return (    
         <Panel classname="flex-1 h-fit">

@@ -1,7 +1,7 @@
 import { CurrencyDataApiURL } from "../constants";
 import { ApiExchangeData } from "../models/ApiExchangeData";
 
-export const getCurrencies = async (): Promise<ApiExchangeData | undefined> => {
+export const getExchangeRates = async (): Promise<ApiExchangeData | undefined> => {
     try {
         const data = await fetch(CurrencyDataApiURL)
         if (data.status === 200) {
@@ -12,6 +12,6 @@ export const getCurrencies = async (): Promise<ApiExchangeData | undefined> => {
         }
     }
     catch {
-        console.log('ERROR')
+        console.error('ERROR')
     }
 }

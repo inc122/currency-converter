@@ -29,7 +29,7 @@ const FormHeader = () => {
                 <Tag
                     variant="transparent"
                     icon={<ClockSVG />}>
-                        {`Last updated: ${moment(exchangeData?.date).format('DD/MM/YYYY hh:mm a')}`}
+                        {`${isOnline ? 'Last updated:' : 'Using cached artes from'} ${moment(exchangeData?.date).format('DD/MM/YYYY hh:mm a')}`}
                 </Tag>
                 <button onClick={loadExchangeData}>
                     <Tag 
