@@ -26,7 +26,7 @@ const CurrencyPicker = ({ value, onChanged }: IProps) => {
 
     useEffect(() => {
         if (!filterText) {
-            setFilteredData(CurrencyList.filter(c => c.code === value.code))
+            setFilteredData(CurrencyList)
         } else {
             setFilteredData(CurrencyList.filter(c => c.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) || c.code.toLocaleLowerCase().includes(filterText.toLocaleLowerCase())))
         }
@@ -35,10 +35,13 @@ const CurrencyPicker = ({ value, onChanged }: IProps) => {
     useEffect(() => {
         if (showModal) {
             dialogRef.current?.showModal()
+            //scroll to selected element
+            const targetElement = document.getElementById(value.code)
+            targetElement?.scrollIntoView()
         } else {
             dialogRef.current?.close()
         }
-    }, [showModal])
+    }, [showModal, value])
 
     return (
         <div className="w-full">
@@ -52,7 +55,7 @@ const CurrencyPicker = ({ value, onChanged }: IProps) => {
                 </div>
             </button>
             {showModal && (
-                <dialog ref={dialogRef} className="rounded-sm p-[16px] w-full lg:w-[440px] h-[450px] lg:h-[439px] flex flex-col gap-[12px]">
+                <dialog ref={dialogRef} className="rounded-sm p-[16px] w-full lg:w-[440px] h-[450px] lg:h-[439px] flex flex-col gap-[12px]" onClose={() => setShowModal(false)}>
                     <div className="flex justify-between">
                         <p className="text-[16px] font-semibold">Select currency</p>
                         <button onClick={() => setShowModal(false)}><CloseSVG /></button>
@@ -64,6 +67,7 @@ const CurrencyPicker = ({ value, onChanged }: IProps) => {
                             const selected = value.code === d.code
                             return (
                                 <button 
+                                    id={d.code}
                                     key={d.name} 
                                     className={`flex items-center gap-[12px] px-[8px] py-[12px] w-full rounded-xs hover:bg-neutral-100 cursor-pointer ${selected ? 'bg-neutral-100' : ''}`}
                                     onClick={() => handleItemSelected(d)}>

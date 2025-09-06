@@ -1,15 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react"
 import FormTitle from "../componnets/FormTitle"
-import Panel from "../componnets/Panel"
-import CurrencyPicker from "../componnets/CurrencyPicker"
 import useCurrenciesState from "../states/currenciesState"
 import SwapSVG from "../svg/SwapSVG"
 import { useDebounce } from "../hooks/useDebounce"
 import { getFromLocalStorage, saveToLocalStorage } from "../helpers/storageHelper"
 import { AMOUNT_STORAGE_KEY } from "../constants"
 import { normalizeStringNumber } from "../helpers/stringHelper"
+import CurrencyPickerMobile from "../componnets/CurrencyPickerMobile"
+import ArrowLeftRightSVG from "../svg/ArrowLeftRightSVG"
 
-const AmounForm = () => {
+const AmounFormMobile = () => {
 
     const [inputValue, setInputValue]= useState('')
     const { fromCurrency, toCurrency, setValue, setFromCurrency, setToCurrency, swapCurrencies } = useCurrenciesState()
@@ -39,29 +39,29 @@ const AmounForm = () => {
     }, [])
 
     return (    
-        <Panel className="flex-1 h-fit">
-            <FormTitle>Amount</FormTitle>
-            <input 
-                className="w-full mt-[8px] rounded-xs p-[12px] border border-neutral-300 bg-neutral-50 text-center outline-none"
-                value={inputValue} 
-                onChange={handleValueChanged}/>
-            <div className="flex gap-[12px] mt-[24px]">
+        <div className="h-fit w-full">
+            <div className="flex gap-[12px] mt-[24px] mb-[16px]">
                 <div className="flex-1">
                     <FormTitle className="mb-[8px]">From</FormTitle>
-                    <CurrencyPicker value={fromCurrency} onChanged={setFromCurrency} />
+                    <CurrencyPickerMobile value={fromCurrency} onChanged={setFromCurrency} />
                 </div>
                 <button 
                     className="flex items-center rounded-xs justify-center w-[42px] h-[42px] hover:bg-neutral-100 self-end"
                     onClick={swapCurrencies}>
-                    <SwapSVG />
+                    <ArrowLeftRightSVG />
                 </button>
                 <div className="flex-1">
                     <FormTitle className="mb-[8px]">To</FormTitle>
-                    <CurrencyPicker value={toCurrency} onChanged={setToCurrency} />
+                    <CurrencyPickerMobile value={toCurrency} onChanged={setToCurrency} />
                 </div>
             </div>
-        </Panel>    
+            <FormTitle>Amount</FormTitle>
+            <input 
+                className="w-full mt-[8px] text-[16px] rounded-xs p-[12px] border bg-white outline-none"
+                value={inputValue} 
+                onChange={handleValueChanged}/>
+        </div>    
     )
 }
 
-export default AmounForm
+export default AmounFormMobile

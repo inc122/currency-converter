@@ -24,7 +24,7 @@ function App() {
   },[])
 
   return (
-    <div className="lg:flex lg:items-center lg:justify-center w-[100vw] h-[100vh] overflow-auto px-[16px] lg:px-0 py-[24px] lg:py-0">
+    <div className="lg:flex lg:items-center lg:justify-center w-[100vw] h-[100vh] overflow-auto px-[20px] sm:px-[16px] lg:px-0 py-[24px] lg:py-0 bg-neutral-50 sm:bg-white">
       <MainContainer />
       <ExchangeRateManager />
       <OnlineStateManager />

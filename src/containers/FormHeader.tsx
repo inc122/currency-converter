@@ -11,7 +11,7 @@ import useExchangeState from "../states/exchangeState"
 
 const FormHeader = () => {
 
-    const { exchangeData, loadExchangeData } = useExchangeState()
+    const { exchangeData, error, loadExchangeData } = useExchangeState()
     const { isOnline } = useOnlineState()
 
     return (
@@ -39,6 +39,9 @@ const FormHeader = () => {
                     </Tag>
                 </button>
             </div>
+            {error && (
+                <p className="text-[12px] text-red-700 w-full text-center mt-[8px]">Could nor refresh exchange rates. Please try again later</p>
+            )}
         </div>
     )
 }

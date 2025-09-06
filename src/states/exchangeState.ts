@@ -12,19 +12,29 @@ type StateAction = {
 type StateData = {
     exchangeData?: ApiExchangeData
     isLoadingData: boolean
+    error: boolean
 }
 
 const useExchangeState = create<StateData & StateAction>((set) => ({
   exchangeData: undefined,
   isLoadingData: false,
+  error: false,
   loadExchangeData: async () => {
     set ({ isLoadingData: true })
     const response = await getExchangeRates()
     if (response) {
-      set({ exchangeData: response })
+      set({ 
+        exchangeData: response, 
+        isLoadingData: false, 
+        error: false 
+      })
       saveToLocalStorage(EXCHANGE_RATE_KEY, response)
+    } else {
+      set({ 
+        isLoadingData: false, 
+        error: true 
+      })
     }
-    set ({ isLoadingData: false })
   },
   setExchangeData: (payload: ApiExchangeData) => {
     set({ exchangeData: payload })
