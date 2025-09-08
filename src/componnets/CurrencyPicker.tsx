@@ -66,8 +66,8 @@ const CurrencyPicker = ({ value, onChanged }: IProps) => {
     }, [filteredData, value])
 
     useEffect(() => {
-        if (focusedIndex !== -1) {
-            const targetElement = document.getElementById(filteredData[focusedIndex].code)
+        if (focusedIndex !== -1 && filteredData.length > 0) {
+            const targetElement = document.getElementById(filteredData[focusedIndex]?.code)
             targetElement?.scrollIntoView({ behavior: 'smooth' })
         }
     }, [focusedIndex, filteredData])
